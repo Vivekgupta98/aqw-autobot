@@ -1,0 +1,133 @@
+{
+  "ChronoShadowhunter": {
+    "cooldowns": [
+      0,
+      0.5,
+      5,
+      3,
+      1.5,
+      6
+    ],
+    "combos": {
+      "boss no heal": {
+        "skills": [
+          2,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5
+        ],
+        "repeat": 0
+      },
+      "boss low heal": {
+        "skills": [
+          2,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          2,
+          3,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5
+        ],
+        "repeat": 0
+      }
+    }
+  },
+  "ArchPaladin": {
+    "cooldowns": [
+      0,
+      2,
+      4,
+      10,
+      25,
+      25
+    ],
+    "combos": {
+      "farm no heal": {
+        "skills": [
+          1,
+          2
+        ],
+        "repeat": 0
+      },
+      "farm heal": {
+        "skills": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3
+        ],
+        "repeat": 0
+      }
+    }
+  },
+  "SwordMaster": {
+    "cooldowns": [
+      0,
+      2,
+      5,
+      25,
+      9,
+      10
+    ],
+    "combos": {
+      "farm": {
+        "skills": [
+          5,
+          2,
+          1,
+          2,
+          1
+        ],
+        "repeat": 0
+      }
+    }
+  },
+  "NeChrono": {
+    "cooldowns": [
+      0,
+      2,
+      2,
+      4,
+      10,
+      2.5
+    ],
+    "combos": {
+      "solo farm": {
+        "skills": [
+          1,
+          2,
+          3,
+          5,
+          1,
+          2,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "repeat": 0
+      }
+    }
+  }
+}
