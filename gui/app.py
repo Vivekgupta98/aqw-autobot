@@ -1,14 +1,17 @@
 """
-gui/app.py — PyQt5 main window. Single-panel layout — everything in RunPanel.
+gui/app.py — PyQt5 main window. Two-tab layout:
+  Tab 1: Keyboard Automation (skill-bot RunPanel)
+  Tab 2: Mouse Click Automation (AutomationPanel)
 """
 from __future__ import annotations
 import os
 
-from PyQt5.QtWidgets import QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTabWidget
 
 import backend.storage as storage
 from backend.engine import AutomationRunner
 from gui.panels.run_panel import RunPanel
+from gui.panels.automation_panel import AutomationPanel
 from gui.dialogs.class_dialog import ClassDialog
 from gui.dialogs.combo_dialog import ComboDialog
 
@@ -17,12 +20,17 @@ class App(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("AQW Bot")
-        self.setMinimumSize(480, 500)
-        self.resize(520, 580)
+        self.setMinimumSize(540, 520)
+        self.resize(600, 640)
 
         self._classes = storage.load_classes()
         self._runner  = AutomationRunner()
 
+        # ── Tab widget ────────────────────────────────────────────────────────
+        self._tabs = QTabWidget()
+        self._tabs.setDocumentMode(True)
+
+        # Tab 1 — Keyboard Automation
         self._panel = RunPanel(
             get_classes     = lambda: self._classes,
             runner          = self._runner,
@@ -33,7 +41,13 @@ class App(QMainWindow):
             on_edit_combo   = self._edit_combo,
             on_delete_combo = self._del_combo,
         )
-        self.setCentralWidget(self._panel)
+        self._tabs.addTab(self._panel, "⌨️  Move Combos")
+
+        # Tab 2 — Mouse Click Automation
+        self._auto_panel = AutomationPanel()
+        self._tabs.addTab(self._auto_panel, "🖱  Mouse Click Automation")
+
+        self.setCentralWidget(self._tabs)
         self._panel.refresh()
 
     def closeEvent(self, event):

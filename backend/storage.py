@@ -9,6 +9,7 @@ import os
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _DATA = os.path.join(_ROOT, "data")
 CLASSES_FILE = os.path.join(_DATA, "classes.json")
+AUTOMATIONS_FILE = os.path.join(_DATA, "automations.json")
 
 # ── Default presets (from old.py) ─────────────────────────────────────────────
 
@@ -70,3 +71,21 @@ def save_classes(classes: dict) -> None:
     _ensure_data_dir()
     with open(CLASSES_FILE, "w") as f:
         json.dump(classes, f, indent=2)
+
+
+# ── Automation persistence ────────────────────────────────────────────────────
+
+def load_automations() -> dict:
+    """Return {name: {"steps": [{"x": int, "y": int, "delay": float}, ...]}}."""
+    _ensure_data_dir()
+    if not os.path.exists(AUTOMATIONS_FILE):
+        save_automations({})
+        return {}
+    with open(AUTOMATIONS_FILE, "r") as f:
+        return json.load(f)
+
+
+def save_automations(automations: dict) -> None:
+    _ensure_data_dir()
+    with open(AUTOMATIONS_FILE, "w") as f:
+        json.dump(automations, f, indent=2)
