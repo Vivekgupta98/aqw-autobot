@@ -51,6 +51,59 @@ python3 run.py
 
 ---
 
+## Offline Tests and Validation
+
+From the repository root, run:
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+The offline suite requires only **Python 3.9+ and its standard library**. You do
+not need to install `requirements.txt`, launch the GUI, have a display, grant
+macOS Accessibility/Input Monitoring permissions, or install or launch AQW.
+The suite can also run on non-macOS systems.
+
+Tests install fake `pyautogui` and `pynput` modules **before** importing the
+backend. Keypresses are recorded only in memory; mouse actions and listener
+creation fail immediately. Clocks, waits, events, and worker threads are replaced
+with bounded, deterministic test doubles: there are no real sleeps, background
+workers, OS input, or recording.
+
+Coverage includes all five default class presets, JSON load/save round-trips,
+legacy classes missing `combos`, automation step order and fractional delays,
+cooldown bookkeeping, finite/infinite repeats, and runner cancellation at
+existing startup, cooldown, and between-skill checkpoints. No backend behavior
+is changed. Persistence tests use temporary directories and never read or write
+tracked user data in `data/classes.json` or `data/automations.json`.
+
+For additional syntax/data validation without importing or launching the app:
+
+```bash
+python3 - <<'PY'
+import ast
+import json
+from pathlib import Path
+
+sources = [Path("run.py"), Path("send_key_to_pid.py")]
+for directory in ("backend", "gui", "tests"):
+    sources.extend(Path(directory).rglob("*.py"))
+for path in sorted(sources):
+    ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+for path in sorted(Path("data").glob("*.json")):
+    with path.open(encoding="utf-8") as stream:
+        json.load(stream)
+print("Python AST and JSON checks passed.")
+PY
+bash -n run.sh
+```
+
+These checks only parse files; `bash -n` does not execute the launcher. Do not
+run `run.py` or `./run.sh` as part of offline validation, and do not delete user
+data to test default regeneration.
+
+---
+
 ## Project Structure
 
 ```
